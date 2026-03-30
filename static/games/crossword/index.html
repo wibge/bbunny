@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crossword Puzzle</title>
+<script src="https://viresh-ratnakar.github.io/exolve-m.js"></script>
+<link rel="stylesheet" href="https://viresh-ratnakar.github.io/exolve-m.css">
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #f3e5f5);
+  margin: 0;
+  padding: 16px;
+}
+.puzzle-picker {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.puzzle-picker button {
+  padding: 10px 22px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  font-weight: 600;
+  background: #7c4dff;
+  color: #fff;
+  margin: 4px;
+  transition: transform 0.1s;
+}
+.puzzle-picker button:hover { transform: translateY(-1px); }
+.puzzle-picker button.active { background: #4a148c; }
+.puzzle-container { display: none; }
+.puzzle-container.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="puzzle-picker">
+  <button onclick="showPuzzle(0)" id="btn0">Puzzle 1</button>
+  <button onclick="showPuzzle(1)" id="btn1">Puzzle 2</button>
+  <button onclick="showPuzzle(2)" id="btn2">Puzzle 3</button>
+</div>
+
+<div class="puzzle-container active" id="puzzle0">
+<script type="text/exolve">
+exolve-begin
+  exolve-id: crossword-001
+  exolve-title: Crossword 1
+  exolve-setter: Big Bunny
+  exolve-width: 9
+  exolve-height: 3
+  exolve-grid:
+    ALSO.AREA
+    R..D.R..D
+    MAKE.KIND
+  exolve-across:
+    1 In addition; too (4)
+    5 A region or space (4)
+    7 To create or build (4)
+    8 Friendly and caring (4)
+  exolve-down:
+    1 Your body part between shoulder and hand (3)
+    2 A type of poem (3)
+    5 Noah's boat (3)
+    6 Put numbers together (3)
+exolve-end
+</script>
+</div>
+
+<div class="puzzle-container" id="puzzle1">
+<script type="text/exolve">
+exolve-begin
+  exolve-id: crossword-002
+  exolve-title: Crossword 2
+  exolve-setter: Big Bunny
+  exolve-width: 9
+  exolve-height: 3
+  exolve-grid:
+    GRAY.BUZZ
+    N..E.U..E
+    UNIT.YARN
+  exolve-across:
+    1 Color between black and white (4)
+    5 The sound a bee makes (4)
+    7 One single thing (4)
+    8 String for knitting (4)
+  exolve-down:
+    1 A wildebeest (3)
+    2 Still; up to now (3)
+    5 To purchase something (3)
+    6 A peaceful Japanese garden idea (3)
+exolve-end
+</script>
+</div>
+
+<div class="puzzle-container" id="puzzle2">
+<script type="text/exolve">
+exolve-begin
+  exolve-id: crossword-003
+  exolve-title: Crossword 3
+  exolve-setter: Big Bunny
+  exolve-width: 9
+  exolve-height: 3
+  exolve-grid:
+    BEEF.THAN
+    A..E.A..O
+    READ.BEAT
+  exolve-across:
+    1 Meat from a cow (4)
+    5 Bigger ___ a breadbox (4)
+    7 Look at words in a book (4)
+    8 The rhythm of music (4)
+  exolve-down:
+    1 At a pub, you sit at the ___ (3)
+    2 Gave food to (3)
+    5 Taxi cab (3)
+    6 Opposite of yes (3)
+exolve-end
+</script>
+</div>
+
+<script>
+function showPuzzle(idx) {
+  document.querySelectorAll('.puzzle-container').forEach((el, i) => {
+    el.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.puzzle-picker button').forEach((btn, i) => {
+    btn.classList.toggle('active', i === idx);
+  });
+}
+showPuzzle(0);
+</script>
+</body>
+</html>

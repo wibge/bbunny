@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lights Out!</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    letter-spacing: 2px;
+  }
+
+  #moves {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: #aac4ff;
+  }
+
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .cell {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    outline: none;
+  }
+
+  .cell:active {
+    transform: scale(0.92);
+  }
+
+  .cell.off {
+    background: #1b1464;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  .cell.on {
+    background: linear-gradient(145deg, #ffe066, #ffb300);
+    box-shadow: 0 0 18px rgba(255, 200, 0, 0.6), inset 0 -2px 4px rgba(0,0,0,0.15);
+  }
+
+  #newGame {
+    padding: 12px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: linear-gradient(145deg, #7b2ff7, #c084fc);
+    color: #fff;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 14px rgba(123, 47, 247, 0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+
+  #newGame:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123, 47, 247, 0.6);
+  }
+
+  #newGame:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 420px) {
+    .cell { width: 56px; height: 56px; border-radius: 12px; }
+    #grid { gap: 6px; }
+    h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+<h1>Lights Out!</h1>
+<div id="moves">Moves: 0</div>
+<div id="grid"></div>
+<button id="newGame">New Game</button>
+
+<script>
+(function() {
+  var SIZE = 5;
+  var grid = [];
+  var moves = 0;
+
+  var gridEl = document.getElementById('grid');
+  var movesEl = document.getElementById('moves');
+
+  function init() {
+    // Start all off, then make random toggles to guarantee solvability
+    grid = [];
+    for (var i = 0; i < SIZE * SIZE; i++) grid.push(false);
+
+    var numMoves = 8 + Math.floor(Math.random() * 10);
+    for (var m = 0; m < numMoves; m++) {
+      var r = Math.floor(Math.random() * SIZE);
+      var c = Math.floor(Math.random() * SIZE);
+      applyToggle(r, c);
+    }
+
+    // Make sure at least one light is on
+    var anyOn = grid.some(function(v) { return v; });
+    if (!anyOn) {
+      var r2 = Math.floor(Math.random() * SIZE);
+      var c2 = Math.floor(Math.random() * SIZE);
+      applyToggle(r2, c2);
+    }
+
+    moves = 0;
+    movesEl.textContent = 'Moves: 0';
+    render();
+  }
+
+  function idx(r, c) { return r * SIZE + c; }
+
+  function applyToggle(r, c) {
+    grid[idx(r, c)] = !grid[idx(r, c)];
+    if (r > 0) grid[idx(r - 1, c)] = !grid[idx(r - 1, c)];
+    if (r < SIZE - 1) grid[idx(r + 1, c)] = !grid[idx(r + 1, c)];
+    if (c > 0) grid[idx(r, c - 1)] = !grid[idx(r, c - 1)];
+    if (c < SIZE - 1) grid[idx(r, c + 1)] = !grid[idx(r, c + 1)];
+  }
+
+  function render() {
+    gridEl.innerHTML = '';
+    for (var r = 0; r < SIZE; r++) {
+      for (var c = 0; c < SIZE; c++) {
+        var btn = document.createElement('button');
+        btn.className = 'cell ' + (grid[idx(r, c)] ? 'on' : 'off');
+        btn.setAttribute('data-r', r);
+        btn.setAttribute('data-c', c);
+        btn.addEventListener('click', onCellClick);
+        gridEl.appendChild(btn);
+      }
+    }
+  }
+
+  function onCellClick(e) {
+    var r = parseInt(e.target.getAttribute('data-r'));
+    var c = parseInt(e.target.getAttribute('data-c'));
+    applyToggle(r, c);
+    moves++;
+    movesEl.textContent = 'Moves: ' + moves;
+    render();
+
+    if (grid.every(function(v) { return !v; })) {
+      window.alert('You Win! Solved in ' + moves + ' moves!');
+    }
+  }
+
+  document.getElementById('newGame').addEventListener('click', init);
+  init();
+})();
+</script>
+</body>
+</html>

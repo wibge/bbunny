@@ -3,13 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BBunny</title>
+    <title>Big Bunny's Quest</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <main>
-        <h1>Welcome to BBunny</h1>
-        <p>Your site is up and running!</p>
-    </main>
+    <div class="container">
+        <header>
+            <h1>Big Bunny's Quest</h1>
+            <p class="subtitle">Enter a password to unlock the next clue</p>
+        </header>
+
+        <form id="guess-form" autocomplete="off">
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="word-input"
+                    placeholder="Type a word..."
+                    autofocus
+                    spellcheck="false"
+                >
+                <button type="submit">Go</button>
+            </div>
+        </form>
+
+        <div id="result-area" class="result-area hidden"></div>
+
+        <div id="word-log" class="word-log">
+            <h2>Words Tried Today</h2>
+            <div id="word-list" class="word-list">
+                <p class="empty-state">No words tried yet. Start guessing!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='quest.js') }}"></script>
 </body>
 </html>

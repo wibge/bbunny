@@ -7,3 +7,5 @@ venv/
 ENV/
 *.log
 .DS_Store
+BigBunnysQuestHelper/
+generate_crosswords.py

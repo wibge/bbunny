@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secret Agent Cipher Decoder</title>
+<style>
+  @import url('');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0e14;
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  /* Scanline overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 65, 0.015) 2px,
+      rgba(0, 255, 65, 0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+    color: #00ff41;
+    text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 40px #00882a;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    color: #00cc33;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    text-align: center;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+  }
+
+  .hint-box {
+    background: rgba(0, 255, 65, 0.06);
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    border-radius: 8px;
+    padding: 12px 20px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #88cc88;
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
+    line-height: 1.5;
+  }
+
+  .hint-box .icon { font-size: 1.3em; }
+
+  .panel {
+    background: #0d1117;
+    border: 1px solid #1a2a1a;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 650px;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.05);
+  }
+
+  .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #557755;
+    margin-bottom: 10px;
+  }
+
+  .encrypted-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    color: #ff4444;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.5), 0 0 16px rgba(255, 68, 68, 0.2);
+    letter-spacing: 3px;
+    word-break: break-word;
+    line-height: 1.6;
+    padding: 16px;
+    background: rgba(255, 68, 68, 0.04);
+    border: 1px dashed rgba(255, 68, 68, 0.2);
+    border-radius: 6px;
+    text-align: center;
+    animation: flicker 4s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0%, 95% { opacity: 1; }
+    96% { opacity: 0.85; }
+    97% { opacity: 1; }
+    98% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+
+  .decoded-text {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(1rem, 3.5vw, 1.5rem);
+    color: #00ff41;
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.5), 0 0 16px rgba(0, 255, 65, 0.2);
+    letter-spacing: 3px;
+    word-break: break-word;
+    line-height: 1.6;
+    padding: 16px;
+    background: rgba(0, 255, 65, 0.04);
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 6px;
+    text-align: center;
+    min-height: 60px;
+    transition: all 0.2s ease;
+  }
+
+  .shift-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .shift-display {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: #00ff41;
+    text-shadow: 0 0 15px #00ff41, 0 0 30px #00882a;
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .shift-label-text {
+    font-size: 0.8rem;
+    color: #557755;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .shift-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid #00ff41;
+    background: rgba(0, 255, 65, 0.08);
+    color: #00ff41;
+    font-size: 1.8rem;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .shift-btn:hover {
+    background: rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
+  }
+
+  .shift-btn:active {
+    transform: scale(0.92);
+    background: rgba(0, 255, 65, 0.3);
+  }
+
+  .slider-wrap {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: #1a2a1a;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #00ff41;
+    box-shadow: 0 0 10px #00ff41;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #00ff41;
+    box-shadow: 0 0 10px #00ff41;
+    cursor: pointer;
+    border: none;
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #445544;
+    margin-top: 4px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: clamp(0.85rem, 2.5vw, 1rem);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-submit {
+    background: rgba(0, 255, 65, 0.15);
+    border: 2px solid #00ff41;
+    color: #00ff41;
+  }
+
+  .btn-submit:hover {
+    background: rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  .btn-submit:active {
+    transform: scale(0.96);
+  }
+
+  .btn-new {
+    background: rgba(255, 170, 0, 0.1);
+    border: 2px solid #ffaa00;
+    color: #ffaa00;
+  }
+
+  .btn-new:hover {
+    background: rgba(255, 170, 0, 0.25);
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.2);
+  }
+
+  .btn-new:active {
+    transform: scale(0.96);
+  }
+
+  .alphabet-ref {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .alphabet-ref span {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-size: 0.7rem;
+    border-radius: 3px;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid rgba(0, 255, 65, 0.1);
+    color: #446644;
+  }
+
+  .footer-note {
+    margin-top: 16px;
+    font-size: 0.7rem;
+    color: #334433;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    .panel { padding: 16px; }
+    .encrypted-text, .decoded-text {
+      letter-spacing: 2px;
+      padding: 12px;
+    }
+    .shift-btn { width: 48px; height: 48px; font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Cipher Decoder</h1>
+<p class="subtitle">// TOP SECRET - AGENT EYES ONLY //</p>
+
+<div class="hint-box">
+  <span class="icon">?</span> <strong>MISSION BRIEFING:</strong> Each letter in the intercepted message has been shifted by a secret number. Use the controls below to try different shifts until the message makes sense. Can you crack the code?
+</div>
+
+<div class="panel">
+  <div class="label">Intercepted Transmission</div>
+  <div class="encrypted-text" id="encrypted"></div>
+</div>
+
+<div class="panel">
+  <div class="shift-controls">
+    <div class="shift-label-text">Shift Amount</div>
+    <div class="button-row">
+      <button class="shift-btn" id="btnMinus" aria-label="Decrease shift">&minus;</button>
+      <div class="shift-display" id="shiftNum">0</div>
+      <button class="shift-btn" id="btnPlus" aria-label="Increase shift">+</button>
+    </div>
+    <div class="slider-wrap">
+      <input type="range" id="shiftSlider" min="0" max="25" value="0">
+      <div class="slider-labels"><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="label">Decoded Message</div>
+  <div class="decoded-text" id="decoded">---</div>
+</div>
+
+<div class="action-buttons">
+  <button class="btn btn-submit" id="btnSubmit">Submit Answer</button>
+  <button class="btn btn-new" id="btnNew">New Puzzle</button>
+</div>
+
+<div class="panel" style="margin-top: 20px;">
+  <div class="label">Alphabet Reference</div>
+  <div class="alphabet-ref" id="alphaRef"></div>
+</div>
+
+<p class="footer-note">CLASSIFIED // CIPHER DIVISION</p>
+
+<script>
+(function() {
+  var puzzles = [
+    { plain: "THE TREASURE IS UNDER THE BIG OAK TREE", shift: 3 },
+    { plain: "LOOK BEHIND THE PAINTING IN THE HALLWAY", shift: 7 },
+    { plain: "CHECK INSIDE THE BLUE COOKIE JAR", shift: 13 },
+    { plain: "THE SECRET WORD IS ADVENTURE", shift: 5 },
+    { plain: "FOLLOW THE PATH TO THE GARDEN GATE", shift: 11 }
+  ];
+
+  var currentPuzzle = null;
+  var currentShift = 0;
+  var lastIndex = -1;
+
+  var elEncrypted = document.getElementById('encrypted');
+  var elDecoded = document.getElementById('decoded');
+  var elShiftNum = document.getElementById('shiftNum');
+  var elSlider = document.getElementById('shiftSlider');
+  var elAlphaRef = document.getElementById('alphaRef');
+
+  // Build alphabet reference
+  for (var i = 0; i < 26; i++) {
+    var s = document.createElement('span');
+    s.textContent = String.fromCharCode(65 + i);
+    elAlphaRef.appendChild(s);
+  }
+
+  function caesarShift(text, shift) {
+    var result = '';
+    for (var i = 0; i < text.length; i++) {
+      var c = text.charCodeAt(i);
+      if (c >= 65 && c <= 90) {
+        result += String.fromCharCode(((c - 65 + shift) % 26 + 26) % 26 + 65);
+      } else if (c >= 97 && c <= 122) {
+        result += String.fromCharCode(((c - 97 + shift) % 26 + 26) % 26 + 97);
+      } else {
+        result += text[i];
+      }
+    }
+    return result;
+  }
+
+  function encrypt(text, shift) {
+    return caesarShift(text, shift);
+  }
+
+  function decrypt(text, shift) {
+    return caesarShift(text, -shift);
+  }
+
+  function loadPuzzle() {
+    var idx;
+    do {
+      idx = Math.floor(Math.random() * puzzles.length);
+    } while (idx === lastIndex && puzzles.length > 1);
+    lastIndex = idx;
+
+    currentPuzzle = puzzles[idx];
+    currentShift = 0;
+
+    var cipherText = encrypt(currentPuzzle.plain, currentPuzzle.shift);
+    elEncrypted.textContent = cipherText;
+
+    elSlider.value = 0;
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    elShiftNum.textContent = currentShift;
+    elSlider.value = currentShift;
+
+    var cipherText = elEncrypted.textContent;
+    var decoded = decrypt(cipherText, currentShift);
+    elDecoded.textContent = decoded;
+
+    // Glow brighter when correct
+    if (decoded === currentPuzzle.plain) {
+      elDecoded.style.textShadow = '0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 40px #00ff41';
+    } else {
+      elDecoded.style.textShadow = '0 0 8px rgba(0,255,65,0.5), 0 0 16px rgba(0,255,65,0.2)';
+    }
+  }
+
+  function setShift(val) {
+    currentShift = ((val % 26) + 26) % 26;
+    updateDisplay();
+  }
+
+  document.getElementById('btnPlus').addEventListener('click', function() {
+    setShift(currentShift + 1);
+  });
+
+  document.getElementById('btnMinus').addEventListener('click', function() {
+    setShift(currentShift - 1);
+  });
+
+  elSlider.addEventListener('input', function() {
+    setShift(parseInt(this.value, 10));
+  });
+
+  document.getElementById('btnSubmit').addEventListener('click', function() {
+    var decoded = decrypt(elEncrypted.textContent, currentShift);
+    if (decoded === currentPuzzle.plain) {
+      window.alert("Great Job Children! You cracked the code!");
+    } else {
+      window.alert("Not quite right... Keep trying different shifts!");
+    }
+  });
+
+  document.getElementById('btnNew').addEventListener('click', function() {
+    loadPuzzle();
+  });
+
+  // Keyboard support
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      setShift(currentShift + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      setShift(currentShift - 1);
+    } else if (e.key === 'Enter') {
+      document.getElementById('btnSubmit').click();
+    }
+  });
+
+  loadPuzzle();
+})();
+</script>
+</body>
+</html>

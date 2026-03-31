@@ -17,6 +17,28 @@ def hash_password(word):
 # Content types: "riddle" (HTML text), "photo" (image filename), "game" (game path)
 QUEST_ENTRIES = [
     {
+        "id": "adlai",
+        "password_hash": hash_password("adlai"),
+        "type": "riddle",
+        "title": "Hello Adlai!",
+        "content": "<p>Hello Adlai! But that's not a clue.</p>",
+    },
+    {
+        "id": "tobin",
+        "password_hash": hash_password("tobin"),
+        "type": "riddle",
+        "title": "Tobin!",
+        "content": "<p>Tobin bobin fo fobin. Tobin! Not a clue.</p>",
+    },
+    {
+        "id": "calliope",
+        "password_hash": hash_password("calliope"),
+        "type": "photo",
+        "title": "My dear Calliope",
+        "content": "bb-friends.jpeg",
+        "hint": "Remember this? Not a clue.",
+    },
+    {
         "id": "welcome",
         "password_hash": hash_password("hello"),
         "type": "riddle",

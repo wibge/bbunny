@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send a Message - Big Bunny</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .msg-form textarea {
+            width: 100%;
+            font-size: 1.1rem;
+            padding: 0.75rem;
+            border: 3px solid #ccc;
+            border-radius: 12px;
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .msg-form textarea:focus {
+            border-color: #7c4dff;
+        }
+        .msg-form button {
+            margin-top: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            background: #7c4dff;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .msg-form button:hover { background: #651fff; }
+        .msg-form button:active { transform: scale(0.96); }
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .alert-success { background: #e8f5e9; color: #2e7d32; border: 1.5px solid #a5d6a7; }
+        .alert-error { background: #fff3e0; color: #e65100; border: 1.5px solid #ffe0b2; }
+        .message-list {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid rgba(0,0,0,0.08);
+        }
+        .message-list h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+        }
+        .message-item {
+            background: white;
+            border: 1.5px solid #e0d4f5;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .message-item .time {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 0.25rem;
+        }
+        .message-item .text {
+            font-size: 1.05rem;
+            color: #444;
+            white-space: pre-wrap;
+        }
+        .empty-state {
+            font-size: 0.95rem;
+            color: #aaa;
+            font-style: italic;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #7c4dff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Send a Message</h1>
+            <p class="subtitle">Leave a note for Big Bunny</p>
+        </header>
+
+        {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+
+        <form class="msg-form" method="POST">
+            <textarea name="message" placeholder="Type your message..." autofocus></textarea>
+            <button type="submit">Send</button>
+        </form>
+
+        <div class="message-list">
+            <h2>Messages Today</h2>
+            {% if messages %}
+                {% for msg in messages|reverse %}
+                <div class="message-item">
+                    <div class="time">{{ msg.time }}</div>
+                    <div class="text">{{ msg.text }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty-state">No messages yet today.</p>
+            {% endif %}
+        </div>
+
+        <a class="back-link" href="/">&larr; Back to the Quest</a>
+    </div>
+</body>
+</html>

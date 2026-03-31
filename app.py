@@ -1,7 +1,8 @@
 import os
-from datetime import date
+from datetime import date, datetime
 
-from flask import Flask, jsonify, render_template, request, session
+import resend
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 from quest_config import QUEST_ENTRIES, hash_password
 
@@ -90,6 +91,60 @@ def reset():
     session["unlocked"] = []
     session["correct_words"] = []
     return jsonify({"ok": True})
+
+
+# In-memory message store (resets on deploy)
+messages_today = []  # list of {"text": str, "time": str, "date": str}
+
+
+def prune_old_messages():
+    today = date.today().isoformat()
+    messages_today[:] = [m for m in messages_today if m["date"] == today]
+
+
+def send_email(text):
+    api_key = os.environ.get("RESEND_API_KEY")
+    from_addr = os.environ.get("RESEND_FROM", "Big Bunny <onboarding+bigbunny@resend.dev>")
+    if not api_key:
+        return False
+    resend.api_key = api_key
+    try:
+        resend.Emails.send({
+            "from": from_addr,
+            "to": ["wibge@gmail.com"],
+            "subject": "Big Bunny Message",
+            "text": text,
+        })
+        return True
+    except Exception as e:
+        print(f"Email failed: {e}")
+        return False
+
+
+@app.route("/msg", methods=["GET", "POST"])
+def msg():
+    prune_old_messages()
+    error = None
+    success = None
+
+    if request.method == "POST":
+        text = request.form.get("message", "").strip()
+        if text:
+            now = datetime.now()
+            messages_today.append({
+                "text": text,
+                "time": now.strftime("%I:%M %p"),
+                "date": date.today().isoformat(),
+            })
+            if send_email(text):
+                success = "Message sent!"
+            else:
+                success = "Message saved!"
+            return redirect(url_for("msg"))
+        else:
+            error = "Please type a message."
+
+    return render_template("msg.html", messages=messages_today, error=error, success=success)
 
 
 @app.route("/health")

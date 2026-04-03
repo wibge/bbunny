@@ -780,7 +780,7 @@ function hintButtonClick() {
       pauseTimer = true;
       document.getElementById("game-difficulty").innerText = "Solved";
       clearInterval(intervalId);
-      alert("Great Job, Children, your next clue is sparklechildren");
+      alert("Great Job Children! Your next clue is: eureka");
     } else {
       // add one minute to the stopwatch as a cost for given hint
       timer += 60;

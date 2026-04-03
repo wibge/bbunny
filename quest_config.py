@@ -11,11 +11,44 @@ import sys
 
 
 def hash_password(word):
-    return hashlib.sha256(word.lower().strip().encode()).hexdigest()
+    return hashlib.sha256(word.lower().replace(" ", "").encode()).hexdigest()
 
 
 # Content types: "riddle" (HTML text), "photo" (image filename), "game" (game path)
 QUEST_ENTRIES = [
+    {
+        "id": "echo-school",
+        "password_hash": hash_password("xxx"),
+        "type": "riddle",
+        "title": "A Quest Awaits!",
+        "content": (
+            "<p>What street sounds back at you when you shout?</p>"
+            "<p>Find the school there — that's what this clue's about.</p>"
+            "<p>Climb the steps where the paint's like a star,</p>"
+            "<p>And read what they say — the journey is how far?</p>"
+        ),
+    },
+    {
+        "id": "thousand-miles",
+        "password_hash": hash_password("thousand miles"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": "<p>Look to your right. The future is now? Then what?</p>",
+    },
+    {
+        "id": "thousand-miles-a",
+        "password_hash": hash_password("a thousand miles"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": "<p>Look to your right. The future is now? Then what?</p>",
+    },
+    {
+        "id": "work-hard",
+        "password_hash": hash_password("work hard get smart"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": "<p>Great work! Now tell me — what year was Lo Coco's founded?</p>",
+    },
     {
         "id": "adlai",
         "password_hash": hash_password("adlai"),
@@ -93,8 +126,117 @@ QUEST_ENTRIES = [
         "content": "<p>Now tell me, what year was Lo Coco's founded?</p>",
     },
     {
-        "id": "poem",
+        "id": "adorable-photos",
         "password_hash": hash_password("1966"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            '<p>Near what cross street were these adorable photos taken?</p>'
+            '<img class="photo-content" src="/static/img/IMG_0441.jpeg" alt="Adorable photo 1" style="margin:0.5rem 0;max-width:100%;border-radius:12px;">'
+            '<img class="photo-content" src="/static/img/IMG_8692.jpeg" alt="Adorable photo 2" style="margin:0.5rem 0;max-width:100%;border-radius:12px;">'
+        ),
+    },
+    {
+        "id": "entrada",
+        "password_hash": hash_password("entrada"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            '<img class="photo-content" src="/static/img/IMG_7741.jpeg" alt="Flowers in the window" style="margin:0.5rem 0;max-width:100%;border-radius:12px;">'
+            "<p>Take two hundred steps toward the setting sun's glow,</p>"
+            "<p>Southwest on the avenue, not too fast, not too slow.</p>"
+            "<p>In the window, bright blooms — that's the picture you seek.</p>"
+            "<p>What's the name of this store? That's the answer you'll speak.</p>"
+        ),
+    },
+    {
+        "id": "good-stock",
+        "password_hash": hash_password("good stock"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>A teacher turned astronaut, sent to save the sun,</p>"
+            "<p>He woke up in space, remembering none.</p>"
+            "<p>Adlai wants to see him — this movie's a thrill!</p>"
+            "<p>What's the name of the actor? That answer will fill.</p>"
+        ),
+    },
+    {
+        "id": "ryan-gosling",
+        "password_hash": hash_password("ryan gosling"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>Hop across the street, there's food to find,</p>"
+            "<p>Black as stone with eggs — a one-of-a-kind.</p>"
+            "<p>Benediction is its name, a blessing indeed,</p>"
+            "<p>What's the price tag say? That's all you need.</p>"
+        ),
+    },
+    {
+        "id": "benediction",
+        "password_hash": hash_password("1625"),
+        "type": "game",
+        "title": "Time for Wordle!",
+        "content": "wordle",
+    },
+    {
+        "id": "eureka",
+        "password_hash": hash_password("eureka"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>Keep walking southwest on Piedmont Ave,</p>"
+            "<p>Past the shops and the signs, be bold and be brave.</p>"
+            "<p>Find the spot where a witch might stock up for her brews —</p>"
+            "<p>What's the name of this place? That's your very next clue.</p>"
+        ),
+    },
+    {
+        "id": "apothicaire",
+        "password_hash": hash_password("twisted thistle apothicaire"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>Hop across to Piedmont Lane,</p>"
+            "<p>Find the shop with an otherworldly name.</p>"
+            "<p>They sell music that's out of this world —</p>"
+            "<p>What symbol's on their sign, bright and bold?</p>"
+        ),
+    },
+    {
+        "id": "lightning-bolt",
+        "password_hash": hash_password("lightning bolt"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>Keep heading southwest on Piedmont Ave,</p>"
+            "<p>Seek the home of Apple Croissants, Raspberry Walnut Scones,</p>"
+            "<p>and Apricot Walnut ________.</p>"
+            "<p>Fill in the blank — that's your next clue!</p>"
+        ),
+    },
+    {
+        "id": "rugelach",
+        "password_hash": hash_password("rugelach"),
+        "type": "riddle",
+        "title": "Great Job Children!",
+        "content": (
+            "<p>He stood before that class of his, a teacher tried and true,</p>"
+            "<p>He filled the board with chalk and proof, the way he'd always do.</p>"
+            "<p>Now here's a number you must find, it rang upon his desk\u2014</p>"
+            "<p>Grandpa's work phone, old but kind, will guide you on this quest.</p>"
+            "<br>"
+            "<p>Make your way back home once more,</p>"
+            "<p>Seek the blue suitcase by the door.</p>"
+            "<p>Lift its latch\u2014your quest takes flight;</p>"
+            "<p>Inside, the trail begins tonight.</p>"
+        ),
+    },
+    {
+        # Grandpa's poem - saved for later use
+        "id": "grandpa-poem",
+        "password_hash": hash_password("PLACEHOLDER_DO_NOT_USE"),
         "type": "riddle",
         "title": "You're Getting Close!",
         "content": (
@@ -111,14 +253,14 @@ QUEST_ENTRIES = [
     },
     {
         "id": "minesweeper",
-        "password_hash": hash_password("boom"),
+        "password_hash": hash_password("bloom"),
         "type": "game",
         "title": "Underground Explosive Locator",
         "content": "minesweeper",
     },
     {
         "id": "sudoku",
-        "password_hash": hash_password("numbers"),
+        "password_hash": hash_password("sparkle"),
         "type": "game",
         "title": "Sudoku Challenge",
         "content": "sudoku",
@@ -132,14 +274,14 @@ QUEST_ENTRIES = [
     },
     {
         "id": "lightsout",
-        "password_hash": hash_password("lights"),
+        "password_hash": hash_password("lights out"),
         "type": "game",
         "title": "Lights Out",
         "content": "lightsout",
     },
     {
         "id": "kenken",
-        "password_hash": hash_password("math"),
+        "password_hash": hash_password("atomic"),
         "type": "game",
         "title": "KenKen",
         "content": "kenken",

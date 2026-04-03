@@ -2903,7 +2903,7 @@ const submit = (text) => {
       game.isGameEnd = true;
       game.win = true;
       gamePopup(
-        `Great Job Children! This solution is your next clue. `
+        `Great Job Children! Your next clue is: bloom`
       );
     } else if (game.currentTry < game.maxTries) {
       // user cannot guess the right word but user have more tries

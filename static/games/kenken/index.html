@@ -319,7 +319,7 @@ function enterNumber(n) {
   // Auto-check for win
   if (n !== 0 && playerGrid.indexOf(0) === -1) {
     if (isComplete()) {
-      setTimeout(function() { window.alert('You Win!'); }, 100);
+      setTimeout(function() { window.alert('Great Job Children! Your next clue is: lights out'); }, 100);
     }
   }
 }
@@ -342,7 +342,7 @@ function checkPuzzle() {
     }
   }
   if (!anyWrong && playerGrid.indexOf(0) === -1) {
-    setTimeout(function() { window.alert('You Win!'); }, 100);
+    setTimeout(function() { window.alert('Great Job Children! Your next clue is: lights out'); }, 100);
   }
 }
 

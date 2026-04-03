@@ -32,21 +32,21 @@ QUEST_ENTRIES = [
         "id": "thousand-miles",
         "password_hash": hash_password("thousand miles"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Great Work Children!",
         "content": "<p>Look to your right. The future is now? Then what?</p>",
     },
     {
         "id": "thousand-miles-a",
         "password_hash": hash_password("a thousand miles"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Great Work Children!",
         "content": "<p>Look to your right. The future is now? Then what?</p>",
     },
     {
         "id": "work-hard",
         "password_hash": hash_password("work hard get smart"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Brilliant!",
         "content": "<p>Great work! Now tell me — what year was Lo Coco's founded?</p>",
     },
     {
@@ -82,7 +82,7 @@ QUEST_ENTRIES = [
         "id": "theater",
         "password_hash": hash_password("crepe"),
         "type": "photo",
-        "title": "Great Job Children!",
+        "title": "Ooh, Fancy!",
         "content": "theater.jpeg",
         "hint": "Can you figure out what the universal love is for?",
     },
@@ -90,7 +90,7 @@ QUEST_ENTRIES = [
         "id": "mosswood",
         "password_hash": hash_password("popcorn"),
         "type": "photo",
-        "title": "Great Job Children!",
+        "title": "Nailed It!",
         "content": "mosswood.jpeg",
         "hint": "I want to know who is playing with the clams!",
     },
@@ -98,7 +98,7 @@ QUEST_ENTRIES = [
         "id": "mister",
         "password_hash": hash_password("shannon"),
         "type": "photo",
-        "title": "Great Job Children!",
+        "title": "Well Done, Detectives!",
         "content": "mister.jpeg",
         "hint": "Who is hosting?!",
     },
@@ -106,7 +106,7 @@ QUEST_ENTRIES = [
         "id": "cosmigraphics",
         "password_hash": hash_password("misterrr"),
         "type": "photo",
-        "title": "Great Job Children!",
+        "title": "You're On Fire!",
         "content": "cosmigraphics.jpeg",
         "hint": "Keep heading north, and see if you can find out what book this is for me.",
     },
@@ -114,7 +114,7 @@ QUEST_ENTRIES = [
         "id": "power",
         "password_hash": hash_password("cosmigraphics"),
         "type": "photo",
-        "title": "Great Job Children!",
+        "title": "Incredible!",
         "content": "power.jpeg",
         "hint": "What should I destroy?",
     },
@@ -122,14 +122,14 @@ QUEST_ENTRIES = [
         "id": "year",
         "password_hash": hash_password("power"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Unstoppable!",
         "content": "<p>Now tell me, what year was Lo Coco's founded?</p>",
     },
     {
         "id": "adorable-photos",
         "password_hash": hash_password("1966"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "History Buffs!",
         "content": (
             '<p>Near what cross street were these adorable photos taken?</p>'
             '<img class="photo-content" src="/static/img/IMG_0441.jpeg" alt="Adorable photo 1" style="margin:0.5rem 0;max-width:100%;border-radius:12px;">'
@@ -140,7 +140,7 @@ QUEST_ENTRIES = [
         "id": "entrada",
         "password_hash": hash_password("entrada"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Sharp Eyes!",
         "content": (
             '<img class="photo-content" src="/static/img/IMG_7741.jpeg" alt="Flowers in the window" style="margin:0.5rem 0;max-width:100%;border-radius:12px;">'
             "<p>Take two hundred steps toward the setting sun's glow,</p>"
@@ -153,7 +153,7 @@ QUEST_ENTRIES = [
         "id": "good-stock",
         "password_hash": hash_password("good stock"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "You're Getting Warmer!",
         "content": (
             "<p>A teacher turned astronaut, sent to save the sun,</p>"
             "<p>He woke up in space, remembering none.</p>"
@@ -165,7 +165,7 @@ QUEST_ENTRIES = [
         "id": "ryan-gosling",
         "password_hash": hash_password("ryan gosling"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Movie Stars!",
         "content": (
             "<p>Hop across the street, there's food to find,</p>"
             "<p>Black as stone with eggs — a one-of-a-kind.</p>"
@@ -184,7 +184,7 @@ QUEST_ENTRIES = [
         "id": "eureka",
         "password_hash": hash_password("eureka"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Puzzle Masters!",
         "content": (
             "<p>Keep walking southwest on Piedmont Ave,</p>"
             "<p>Past the shops and the signs, be bold and be brave.</p>"
@@ -196,7 +196,7 @@ QUEST_ENTRIES = [
         "id": "apothicaire",
         "password_hash": hash_password("twisted thistle apothicaire"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Spellbound!",
         "content": (
             "<p>Hop across to Piedmont Lane,</p>"
             "<p>Find the shop with an otherworldly name.</p>"
@@ -208,7 +208,7 @@ QUEST_ENTRIES = [
         "id": "lightning-bolt",
         "password_hash": hash_password("lightning bolt"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "Electrifying!",
         "content": (
             "<p>Keep heading southwest on Piedmont Ave,</p>"
             "<p>Seek the home of Apple Croissants, Raspberry Walnut Scones,</p>"
@@ -220,7 +220,7 @@ QUEST_ENTRIES = [
         "id": "rugelach",
         "password_hash": hash_password("rugelach"),
         "type": "riddle",
-        "title": "Great Job Children!",
+        "title": "The Final Chapter!",
         "content": (
             "<p>He stood before that class of his, a teacher tried and true,</p>"
             "<p>He filled the board with chalk and proof, the way he'd always do.</p>"

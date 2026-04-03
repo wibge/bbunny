@@ -215,6 +215,14 @@ button[type="submit"]:active {
         font-size: 1.1rem;
     }
 
+    .container {
+        padding: 1rem 0.5rem;
+    }
+
+    .result-area {
+        padding: 0.75rem;
+    }
+
     .game-frame {
         height: 500px;
     }

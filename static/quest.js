@@ -52,7 +52,7 @@ function showContent(entry) {
     resultArea.classList.remove('miss');
     resultArea.classList.add('hit');
 
-    let html = `<h2 class="result-title">${entry.title}</h2>`;
+    let html = entry.type !== 'game' ? `<h2 class="result-title">${entry.title}</h2>` : '';
 
     if (entry.type === 'riddle') {
         html += `<div class="riddle-content">${entry.content}</div>`;

@@ -2745,7 +2745,7 @@ const game = {
     "zonal",
     "zoned",
   ],
-  word: "train",
+  word: null,
   fetchWord: async function() {
     // fetch from api
     // const apiURL = `http://localhost:2004/`;
@@ -3047,8 +3047,7 @@ overlayCrossButton.addEventListener(
   hideOverlay.bind(this, settingsOverlayContent)
 );
 
-// By default show the helpOverlay at the beginning
-showOverlay(helpOverlayContent);
+// Help overlay disabled - kids know how to play
 
 // set the theme & difficulty according to localstorage value
 switchDifficulty(game.hardMode);

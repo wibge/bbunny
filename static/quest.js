@@ -59,7 +59,8 @@ function showContent(entry) {
     } else if (entry.type === 'photo') {
         html += `<img class="photo-content" src="/static/img/${entry.content}" alt="${entry.title}">`;
     } else if (entry.type === 'game') {
-        html += `<iframe class="game-frame" src="/static/games/${entry.content}/index.html" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>`;
+        window.location.href = `/static/games/${entry.content}/index.html`;
+        return;
     }
 
     if (entry.hint) {

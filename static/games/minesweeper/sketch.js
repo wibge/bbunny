@@ -4,8 +4,8 @@ document.body.onmousedown = function(e) { if (e.button === 1) return false; }
 // TODO: Options menu accessible to the player
 const cellSize = 40;
 const topBarHeight = cellSize;
-const gridWidth = 15;
-const gridHeight = 15;
+const gridWidth = 12;
+const gridHeight = 12;
 const grid = make2DGrid(gridWidth);
 const percentageMines = 0.01;
 const numMines = Math.ceil(percentageMines * gridWidth * gridHeight);

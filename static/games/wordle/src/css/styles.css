@@ -603,6 +603,7 @@ p, a {
 }
 
 .keyboard-key {
+  touch-action: manipulation;
   height: 3rem;
   border-radius: 0.375rem;
   text-align: center;

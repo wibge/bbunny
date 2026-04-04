@@ -3135,9 +3135,7 @@ document.querySelectorAll(".keyboard-row").forEach((row) => {
             if (game.guesses[game.currentTry].length >= 1) {
               remove();
             } else {
-              gamePopup(
-                "Please guess a word within 5 characters & type it."
-              );
+              // ignore
             }
           } else if (parseInt(e.target.dataset.keycode) === 13) {
             // if pressed key is Enter

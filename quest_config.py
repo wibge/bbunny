@@ -22,8 +22,8 @@ QUEST_ENTRIES = [
         "type": "riddle",
         "title": "A Quest Awaits!",
         "content": (
-            "<p>What street sounds back at you when you shout?</p>"
-            "<p>Find the school there — that's what this clue's about.</p>"
+            "<p>Find the street that reflects every sound,</p>"
+            "<p>A school you've never attended, but it's there to be found.</p>"
             "<p>Climb the steps where the paint's like a star,</p>"
             "<p>And read what they say — the journey is how far?</p>"
         ),

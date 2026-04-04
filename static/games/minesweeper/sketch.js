@@ -7,7 +7,7 @@ const topBarHeight = cellSize;
 const gridWidth = 12;
 const gridHeight = 12;
 const grid = make2DGrid(gridWidth);
-const percentageMines = 0.01;
+const percentageMines = 0.14;
 const numMines = Math.ceil(percentageMines * gridWidth * gridHeight);
 let moves;
 let gameHasBegun;

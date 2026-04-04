@@ -2826,36 +2826,47 @@ const submit = (text) => {
     const wrongLetters = [];
     const wrongSpotLetters = [];
 
-    game.word.split("").forEach((ch, index) => {
-      const currentCell = document.querySelector(
-        `.game-cell-${5 * game.currentTry - (5 - (index + 1))} h2`
-      );
-      if (ch === text.split("")[index]) {
-        rightCells.push(currentCell);
-        rightLetters.push(currentCell.textContent);
-      } else {
-        // check that if the user types any word in wrong spot
-        if (text.search(ch) > -1 && !game.hardMode) {
-          // user type a character in a wrong spot
-          const wrongSpotCell = document.querySelector(
-            `.game-cell-${5 * game.currentTry - (5 - (text.search(ch) + 1))
-            } h2`
-          );
-          wrongCells.push(currentCell);
-          wrongSpotCells.push(wrongSpotCell);
-          wrongLetters.push(currentCell.textContent);
-          wrongSpotLetters.push(wrongSpotCell.textContent);
-        } else {
-          if (
-            !wrongSpotCells.includes(currentCell) &&
-            !wrongSpotLetters.includes(currentCell.textContent)
-          ) {
-            wrongCells.push(currentCell);
-            wrongLetters.push(currentCell.textContent);
-          }
+    const answer = game.word.split("");
+    const guess = text.split("");
+    const cellResults = new Array(5).fill("wrong");
+
+    // First pass: mark greens (correct position)
+    const remainingAnswer = [...answer];
+    for (let i = 0; i < 5; i++) {
+      if (guess[i] === answer[i]) {
+        cellResults[i] = "right";
+        remainingAnswer[i] = null;
+      }
+    }
+
+    // Second pass: mark yellows (wrong position, letter exists)
+    if (!game.hardMode) {
+      for (let i = 0; i < 5; i++) {
+        if (cellResults[i] === "right") continue;
+        const idx = remainingAnswer.indexOf(guess[i]);
+        if (idx > -1) {
+          cellResults[i] = "wrongSpot";
+          remainingAnswer[idx] = null;
         }
       }
-    });
+    }
+
+    // Populate cell arrays
+    for (let i = 0; i < 5; i++) {
+      const cell = document.querySelector(
+        `.game-cell-${5 * game.currentTry - (5 - (i + 1))} h2`
+      );
+      if (cellResults[i] === "right") {
+        rightCells.push(cell);
+        rightLetters.push(cell.textContent);
+      } else if (cellResults[i] === "wrongSpot") {
+        wrongSpotCells.push(cell);
+        wrongSpotLetters.push(cell.textContent);
+      } else {
+        wrongCells.push(cell);
+        wrongLetters.push(cell.textContent);
+      }
+    }
 
     rightCells.forEach((cell) => {
       cell.parentElement.classList.add("bg-primary");
@@ -2918,10 +2929,6 @@ const submit = (text) => {
     }
   } else {
     gamePopup("Not in word list.");
-    // empty all the game cell
-    for (let i = 0; i < 5; i++) {
-      remove();
-    }
   }
 };
 
@@ -3084,7 +3091,7 @@ window.addEventListener("keydown", (e) => {
         if (game.guesses[game.currentTry].length === 5) {
           submit(game.guesses[game.currentTry].join(""));
         } else {
-          gamePopup("Not enough letters.");
+          // ignore - not enough letters
         }
       }
     } else if (game.isGameEnd && game.currentTry <= game.maxTries) {
@@ -3139,7 +3146,7 @@ document.querySelectorAll(".keyboard-row").forEach((row) => {
             if (game.guesses[game.currentTry].length === 5) {
               submit(game.guesses[game.currentTry].join(""));
             } else {
-              gamePopup("Not enough letters.");
+              // ignore - not enough letters
             }
           }
         } else if (game.isGameEnd && game.currentTry <= game.maxTries) {

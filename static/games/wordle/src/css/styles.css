@@ -577,7 +577,7 @@ p, a {
   margin: auto;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  grid-template-rows: repeat(5, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   gap: 0.25rem;
   max-width: 22rem;
 }

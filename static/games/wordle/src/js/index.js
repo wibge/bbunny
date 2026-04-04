@@ -305,9 +305,10 @@ const game = {
     3: [],
     4: [],
     5: [],
+    6: [],
   },
   currentTry: 1,
-  maxTries: 5,
+  maxTries: 6,
   isGameEnd: false,
   win: false,
 };

@@ -3082,9 +3082,7 @@ window.addEventListener("keydown", (e) => {
         if (game.guesses[game.currentTry].length >= 1) {
           remove();
         } else {
-          gamePopup(
-            "Please guess a word within 5 characters & type it."
-          );
+          // ignore
         }
       } else if (e.keyCode === 13) {
         // if pressed key is Enter

@@ -18,7 +18,13 @@ def hash_password(word):
 QUEST_ENTRIES = [
     {
         "id": "echo-school",
-        "password_hash": hash_password("xxx"),
+        "password_hash": hash_password("f3 e5 c6 b8"),
+        "type": "riddle",
+        "title": "A Quest Awaits!",
+    },
+    {
+        "id": "echo-school-alt",
+        "password_hash": hash_password("f3 d4 c6 b8"),
         "type": "riddle",
         "title": "A Quest Awaits!",
         "content": (

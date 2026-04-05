@@ -240,6 +240,18 @@ QUEST_ENTRIES = [
         ),
     },
     {
+        "id": "guest-bed",
+        "password_hash": hash_password("8141"),
+        "type": "riddle",
+        "title": "Almost There!",
+        "content": (
+            "<p>Find the bed where guests come to rest,</p>"
+            "<p>Close to where Mama works her best.</p>"
+            "<p>Get down on your knees and look below —</p>"
+            "<p>Something special waits there, don't you know?</p>"
+        ),
+    },
+    {
         # Grandpa's poem - saved for later use
         "id": "grandpa-poem",
         "password_hash": hash_password("PLACEHOLDER_DO_NOT_USE"),

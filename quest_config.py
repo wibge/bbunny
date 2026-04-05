@@ -21,6 +21,12 @@ QUEST_ENTRIES = [
         "password_hash": hash_password("f3 e5 c6 b8"),
         "type": "riddle",
         "title": "A Quest Awaits!",
+        "content": (
+            "<p>Find the street that reflects every sound,</p>"
+            "<p>A school you've never attended, but it's there to be found.</p>"
+            "<p>Climb the steps where the paint's like a star,</p>"
+            "<p>And read what they say — the journey is how far?</p>"
+        ),
     },
     {
         "id": "echo-school-alt",

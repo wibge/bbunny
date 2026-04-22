@@ -11,7 +11,27 @@
         <header>
             <h1>Big Bunny's Quest</h1>
             <p class="subtitle">Enter a password to unlock the next clue</p>
+            <div id="countdown" style="margin-top:1rem;font-size:1.4rem;font-weight:700;color:#4a2c82;letter-spacing:0.5px;"></div>
         </header>
+
+        <script>
+        (function() {
+            var target = new Date('2026-06-04T12:00:00-07:00').getTime();
+            var el = document.getElementById('countdown');
+            function update() {
+                var now = Date.now();
+                var diff = target - now;
+                if (diff <= 0) { el.textContent = "The quest begins NOW!"; return; }
+                var d = Math.floor(diff / 86400000);
+                var h = Math.floor((diff % 86400000) / 3600000);
+                var m = Math.floor((diff % 3600000) / 60000);
+                var s = Math.floor((diff % 60000) / 1000);
+                el.textContent = d + "d " + h + "h " + m + "m " + s + "s";
+            }
+            update();
+            setInterval(update, 1000);
+        })();
+        </script>
 
         <form id="guess-form" autocomplete="off">
             <div class="input-group">
